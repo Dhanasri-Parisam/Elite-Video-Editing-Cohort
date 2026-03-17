@@ -1,0 +1,57 @@
+AIM: : Implement one hot encoding of words or characters. 
+DESCRIPTION: 
+One-hot encoding is the most common, most basic way to turn a token into a vector. You already 
+saw it in action in our initial IMDB and Reuters examples from chapter 3 (done with words, in our 
+case). It consists in associating a unique integer index to every word, then turning this integer index 
+i into a binary vector of size N, the size of the vocabulary, that would be all-zeros except for the i-
+th entry, which would be 1. 
+Of course, one-hot encoding can be done at the character level as well. To unambiguously drive 
+home what one-hot encoding is and how to implement it, here are two toy examples of one-hot 
+encoding: one for words, the other for characters. 
+ PROGRAM: 
+import numpy as np 
+# Sample sentences 
+samples = { 
+ 'Jupiter has 79 known moons .', 
+ 'Neptune has 14 confirmed moons !' 
+} 
+# Step 1: Create token index (vocabulary) 
+token_index = {} 
+counter = 0 
+for sample in samples: 
+ for considered_word in sample.split(): 
+ if considered_word not in token_index: 
+ counter += 1 
+ token_index[considered_word] = counter
+print(token_index) 
+# Step 2: Set maximum sentence length 
+max_length = 6 
+# Step 3: Create zero tensor (samples × max_length × vocabulary_size+1) 
+results = np.zeros( 
+ (len(samples), max_length, max(token_index.values()) + 1) 
+) 
+# Step 4: One-hot encoding 
+for i, sample in enumerate(samples): 
+ for j, considered_word in enumerate(sample.split()): 
+ if j < max_length: 
+ index = token_index[considered_word] 
+ results[i, j, index] = 1 
+# Step 5: Display results 
+print("\nOne-Hot Encoded Tensor:") 
+print(results) 
+OUTPUT: 
+Token Index: 
+{'Neptune': 1, 'has': 2, '14': 3, 'confirmed': 4, 'moons': 5, '!': 6, 'Jupiter': 7, '79': 8, 'known': 9, '.': 10} 
+One-Hot Encoded Tensor: 
+[[[0. 1. 0. 0. 0. 0. 0. 0. 0. 0. 0.] 
+ [0. 0. 1. 0. 0. 0. 0. 0. 0. 0. 0.] 
+ [0. 0. 0. 1. 0. 0. 0. 0. 0. 0. 0.] 
+ [0. 0. 0. 0. 1. 0. 0. 0. 0. 0. 0.] 
+ [0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0.] 
+ [0. 0. 0. 0. 0. 0. 1. 0. 0. 0. 0.]]
+[[0. 0. 0. 0. 0. 0. 0. 1. 0. 0. 0.] 
+ [0. 0. 1. 0. 0. 0. 0. 0. 0. 0. 0.] 
+ [0. 0. 0. 0. 0. 0. 0. 0. 1. 0. 0.] 
+ [0. 0. 0. 0. 0. 0. 0. 0. 0. 1. 0.] 
+ [0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0.] 
+ [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 1.]]]

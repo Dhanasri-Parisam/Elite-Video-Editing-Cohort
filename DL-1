@@ -1,0 +1,37 @@
+import numpy as np 
+from matplotlib import pyplot as plt 
+from tensorflow.keras.datasets import mnist 
+# Load MNIST dataset 
+(x_train, y_train), (x_test, y_test) = mnist.load_data() 
+# Count training labels 
+unique, counts = np.unique(y_train, return_counts=True) 
+print("Train:", dict(zip(unique, counts))) 
+# Count test labels 
+unique, counts = np.unique(y_test, return_counts=True) 
+print("\nTest labels:", dict(zip(unique, counts))) 
+# Select 25 random images 
+indexes = np.random.randint(0, x_train.shape[0], size=25) 
+images = x_train[indexes] 
+labels = y_train[indexes] 
+# Plot images 
+plt.figure(figsize=(5, 5)) 
+for i in range(len(indexes)): 
+ plt.subplot(5, 5, i + 1) 
+ image = images[i] 
+ plt.imshow(image, cmap="gray") 
+ plt.axis("off"# Save and show figure 
+plt.savefig("mnist_sample.png") 
+plt.show() 
+# Close all figures 
+plt.close("all") 
+ OUTPUT: 
+ 
+ Downloading data from https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
+11490434/11490434 ━━━━━━━━━━━━━━━━━━━━ 0s 0us/step 
+Train: {np.uint8(0): np.int64(5923), np.uint8(1): np.int64(6742), np.uint8(2): np.int64(5958), 
+np.uint8(3): np.int64(6131), np.uint8(4): np.int64(5842), np.uint8(5): np.int64(5421), np.uint8(6): 
+np.int64(5918), np.uint8(7): np.int64(6265), np.uint8(8): np.int64(5851), np.uint8(9): 
+np.int64(5949)} 
+Test labels: {np.uint8(0): np.int64(980), np.uint8(1): np.int64(1135), np.uint8(2): np.int64(1032), 
+np.uint8(3): np.int64(1010), np.uint8(4): np.int64(982), np.uint8(5): np.int64(892), np.uint8(6): 
+np.int64(958), np.uint8(7): np.int64(1028), np.uint8(8): np.int64(974), np.uint8(9): np.int64(1009)}
